@@ -1,0 +1,39 @@
+services:
+  - type: web
+    name: pneutrack-cloud
+    env: docker
+    plan: free
+    autoDeploy: true
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: TZ
+        value: Europe/Rome
+      - key: ADMIN_EMAIL
+        value: rmichieletto570@gmail.com
+      - key: ADMIN_PASSWORD
+        value: ChangeMeSubito!
+      - key: NOTIFY_TOKEN
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: pneutrack-db
+          property: connectionString
+      - key: TWILIO_ACCOUNT_SID
+        sync: false
+      - key: TWILIO_AUTH_TOKEN
+        sync: false
+      - key: TWILIO_WHATSAPP_FROM
+        value: whatsapp:+14155238886
+      - key: TWILIO_SMS_FROM
+        sync: false
+    healthCheckPath: /healthz
+
+databases:
+  - name: pneutrack-db
+    plan: free
+
+cronJobs:
+  - name: pneutrack-daily-notify
+    schedule: "0 9 * * *"
+    command: "curl -sS https://$RENDER_EXTERNAL_URL/cron/daily?token=$NOTIFY_TOKEN"
