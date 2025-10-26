@@ -17,7 +17,9 @@ app.config["SQLALCHEMY_DATABASE_URI"] = uri
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
-
+# Crea le tabelle all'avvio (anche su Render/Gunicorn)
+with app.app_context():
+    db.create_all()
 # ----------------------------------------------------------------------------
 # MODELLI DATABASE
 # ----------------------------------------------------------------------------
