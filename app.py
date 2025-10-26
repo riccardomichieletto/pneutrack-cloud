@@ -329,3 +329,6 @@ def bootstrap():
 
 if __name__ == '__main__':
     bootstrap(); app.run(host="0.0.0.0", port=int(os.getenv('PORT', 5000)), debug=True)
+@app.route('/healthz')
+def healthz():
+    return "ok", 200
