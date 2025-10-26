@@ -33,7 +33,3 @@ databases:
   - name: pneutrack-db
     plan: free
 
-cronJobs:
-  - name: pneutrack-daily-notify
-    schedule: "0 9 * * *"
-    command: "curl -sS https://$RENDER_EXTERNAL_URL/cron/daily?token=$NOTIFY_TOKEN"
