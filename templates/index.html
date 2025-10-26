@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <title>PneuTrack Cloud – Clienti</title>
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;margin:30px;}
+    nav a{margin-right:12px;text-decoration:none;color:#0a58ca}
+    table{border-collapse:collapse;width:100%;margin-top:12px}
+    th,td{border:1px solid #ddd;padding:8px}
+    th{background:#f1f5f9;text-align:left}
+    form input{margin-right:8px;padding:6px}
+    button{padding:6px 10px;cursor:pointer}
+    .muted{color:#6b7280}
+  </style>
+</head>
+<body>
+  {% include "_header.html" %}
+
+  <h2>Clienti</h2>
+  <form method="POST" action="/add_client">
+    <input name="name" placeholder="Nome e cognome" required>
+    <input name="phone" placeholder="Telefono">
+    <input name="email" placeholder="Email">
+    <input name="notes" placeholder="Note">
+    <button type="submit">Aggiungi</button>
+  </form>
+
+  {% if clients %}
+  <table>
+    <thead><tr><th>Nome</th><th>Telefono</th><th>Email</th><th>Note</th><th>Azioni</th></tr></thead>
+    <tbody>
+      {% for c in clients %}
+      <tr>
+        <td>{{ c.name }}</td><td>{{ c.phone or '-' }}</td><td>{{ c.email or '-' }}</td><td>{{ c.notes or '-' }}</td>
+        <td>
+          <a href="/vehicles?client_id={{ c.id }}">Veicoli</a> |
+          <a href="/delete_client/{{ c.id }}" onclick="return confirm('Eliminare?')">Elimina</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <p class="muted">Nessun cliente ancora.</p>
+  {% endif %}
+</body>
+</html>
